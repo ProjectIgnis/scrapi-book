@@ -18,6 +18,6 @@ hero:
       text: Contribute
       link: https://github.com/ProjectIgnis/scrapiyard/blob/master/v1-nification.md
   image:
-    src: ./assets/ignis_logo.png
+    src: /ignis_logo.png
     alt: Project Ignis
 ---
