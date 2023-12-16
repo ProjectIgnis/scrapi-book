@@ -44,6 +44,8 @@ jobs:
         uses: actions/configure-pages@v3
       - name: Install dependencies
         run: npm ci
+      - name: Create API Pages
+        run: npm run create-api-pages
       - name: Build with VitePress
         run: |
           npm run docs:build
