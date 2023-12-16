@@ -4,8 +4,9 @@ import apiSidebar from './apiSidebar.json';
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: 'scrapi-book',
-  description:
-    'Project Ignis: EDOPro Card Scripting Guides and API Documentation',
+  description: 'EDOPro Scripting Guides and Reference',
+
+  base: '/repo/',
 
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
