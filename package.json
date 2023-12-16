@@ -23,6 +23,7 @@
   "author": "that-hatter",
   "license": "AGPL-3.0-or-later",
   "devDependencies": {
+    "@types/node": "^20.10.4",
     "@typescript-eslint/eslint-plugin": "^5.26.0",
     "@typescript-eslint/parser": "^5.50.0",
     "@typescript-eslint/type-utils": "^5.50.0",
@@ -31,14 +32,14 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-functional": "^5.0.0",
     "prettier": "^2.6.2",
-    "typescript": "^5.1.6",
-    "vitepress": "^1.0.0-alpha.76"
+    "typescript": "^5.1.6"
   },
   "peerDependencies": {
     "vue": "^3.3.4"
   },
   "dependencies": {
     "@that-hatter/scrapi-factory": "^0.3.1",
-    "cross-env": "^7.0.3"
+    "cross-env": "^7.0.3",
+    "vitepress": "github:sr2ds/vitepress#package-json-script-prepare"
   }
 }

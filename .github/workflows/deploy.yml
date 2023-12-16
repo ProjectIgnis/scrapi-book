@@ -41,7 +41,7 @@ jobs:
           cache-dependency-path: ./main
       - name: Setup Pages
         uses: actions/configure-pages@v3
-      - name: Install dependencies
+      - name: Build Site
         working-directory: main
         run: |-
           npm ci
