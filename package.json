@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "create-api-pages": "npx tsc && node dist/book",
     "docs:dev": "vitepress dev docs",
-    "docs:build": "vitepress build docs",
+    "docs:build": "cross-env NODE_OPTIONS=--max-old-space-size=3072 vitepress build docs",
     "docs:preview": "vitepress preview docs"
   },
   "keywords": [
@@ -38,6 +38,7 @@
     "vue": "^3.3.4"
   },
   "dependencies": {
-    "@that-hatter/scrapi-factory": "^0.3.1"
+    "@that-hatter/scrapi-factory": "^0.3.1",
+    "cross-env": "^7.0.3"
   }
 }
