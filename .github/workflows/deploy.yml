@@ -48,7 +48,7 @@ jobs:
         run: |-
           npm ci
           npm run create-api-pages
-          nmp run docs:build
+          npm run docs:build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
