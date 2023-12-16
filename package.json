@@ -38,6 +38,6 @@
     "vue": "^3.3.4"
   },
   "dependencies": {
-    "@that-hatter/scrapi-factory": "^0.3.0"
+    "@that-hatter/scrapi-factory": "^0.3.1"
   }
 }
