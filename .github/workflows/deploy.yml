@@ -29,7 +29,10 @@ jobs:
       - name: Checkout scrapiyard
         uses: actions/checkout@v3
         with:
-          name: ProjectIgnis/scrapiyard
+          repository: ProjectIgnis/scrapiyard
+      - name: Go to parent directory
+        run: |
+          cd .
       - name: Checkout scrapi-book
         uses: actions/checkout@v3
       - name: Setup Node
