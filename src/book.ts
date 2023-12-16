@@ -83,7 +83,7 @@ const program = pipe(
   TE.tapError((err) => {
     const errStr = JSON.stringify(err, null, 2);
     // eslint-disable-next-line functional/no-expression-statements
-    console.log('Error encountered. Check error.json');
+    console.log(errStr);
     return writeFileTask(path.join(process.cwd(), '..', 'error.json'), errStr);
   })
 );
