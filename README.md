@@ -9,4 +9,4 @@
 Generates the "scrapi-book" site using the documentation files from scrapiyard.
 
 **NOTE:** The github page will be moved to the `ProjectIgnis/scrapiyard`
-repo after the CI is set up. The link here is not final.
+repo once the CI is properly set up. The link here is not final.
