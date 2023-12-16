@@ -34,7 +34,7 @@ jobs:
       - name: Checkout scrapi-book
         uses: actions/checkout@v3
         with:
-          path: main
+          path: scrapi-book
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
