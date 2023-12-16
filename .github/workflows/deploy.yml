@@ -30,11 +30,11 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: ProjectIgnis/scrapiyard
-          path: ../scrapiyard
+          path: scrapiyard
       - name: Checkout scrapi-book
         uses: actions/checkout@v4
-      - name: Enter book directory
-        run: cd scrapi-book
+        with:
+          path: main
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
@@ -43,16 +43,15 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Install dependencies
-        run: npm ci
-      - name: Create API Pages
-        run: npm run create-api-pages
-      - name: Build with VitePress
-        run: |
-          npm run docs:build
+        working-directory: main
+        run: |-
+          npm ci
+          npm run create-api-pages
+          nmp run docs:build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
-          path: docs/.vitepress/dist
+          path: main/docs/.vitepress/dist
 
   # Deployment job
   deploy:
