@@ -1,0 +1,35 @@
+{
+  "env": {
+    "node": true,
+    "es6": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "tsconfig.json"
+  },
+  "plugins": ["@typescript-eslint", "functional"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "plugin:functional/external-typescript-recommended",
+    "plugin:functional/strict",
+    "prettier"
+  ],
+  "rules": {
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      { "argsIgnorePattern": "^_*$" }
+    ],
+    "functional/no-conditional-statements": [
+      "error",
+      {
+        "allowReturningBranches": true
+      }
+    ],
+    "functional/functional-parameters": "off",
+    "functional/prefer-immutable-types": "off",
+    "functional/type-declaration-immutability": "off"
+  }
+}
