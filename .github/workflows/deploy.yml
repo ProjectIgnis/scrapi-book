@@ -27,14 +27,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout scrapiyard
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: ProjectIgnis/scrapiyard
           path: scrapiyard
       - name: Checkout scrapi-book
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
-          path: scrapi-book
+          path: main
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
