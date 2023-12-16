@@ -4,5 +4,6 @@ tsconfig.tsbuildinfo
 docs/.vitepress/cache
 docs/.vitepress/dist
 docs/.vitepress/apiSidebar.json
+docs/.vitepress/.temp
 docs/api
 error.json
