@@ -52,13 +52,13 @@ const writeFileTask = TE.tryCatchK(
 
 const generatePageFile = (page: APIPage<sf.Topic>) =>
   writeFileTask(
-    path.join(__dirname, '..', 'docs', page.link + '.md'),
+    path.join(process.cwd(), 'docs', page.link + '.md'),
     page.content
   );
 
 const generateSidebarFile = (api: sf.API) =>
   writeFileTask(
-    path.join(__dirname, '..', 'docs', '.vitepress', 'apiSidebar.json'),
+    path.join(process.cwd(), 'docs', '.vitepress', 'apiSidebar.json'),
     JSON.stringify(createSidebar(api), null, 2)
   );
 
@@ -84,7 +84,7 @@ const program = pipe(
     const errStr = JSON.stringify(err, null, 2);
     // eslint-disable-next-line functional/no-expression-statements
     console.log('Error encountered. Check error.json');
-    return writeFileTask(path.join(__dirname, '..', 'error.json'), errStr);
+    return writeFileTask(path.join(process.cwd(), '..', 'error.json'), errStr);
   })
 );
 
