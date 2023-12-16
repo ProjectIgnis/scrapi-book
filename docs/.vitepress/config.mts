@@ -6,7 +6,7 @@ export default defineConfig({
   title: 'scrapi-book',
   description: 'EDOPro Scripting Guides and Reference',
 
-  base: '/repo/',
+  base: '/scrapi-book/',
 
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
