@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "create-api-pages": "npx tsc && node dist/book",
     "docs:dev": "vitepress dev docs",
-    "docs:build": "cross-env NODE_OPTIONS=--max-old-space-size=3072 vitepress build docs",
+    "docs:build": "cross-env NODE_OPTIONS=--max-old-space-size=6144 vitepress build docs",
     "docs:preview": "vitepress preview docs"
   },
   "keywords": [
