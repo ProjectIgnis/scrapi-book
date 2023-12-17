@@ -7,6 +7,7 @@ export default defineConfig({
   description: 'EDOPro Scripting Guides and Reference',
 
   base: '/scrapi-book/',
+  head: [['link', { rel: 'icon', href: '/scrapi-book/ignis_logo.png' }]],
 
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
@@ -69,9 +70,11 @@ export default defineConfig({
     },
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/ProjectIgnis' },
-      { icon: 'discord', link: 'https://discord.gg/ygopro-percy' },
-      { icon: 'twitter', link: 'https://twitter.com/ProjectIgnisYGO' },
+      { icon: 'github', link: 'https://github.com/that-hatter/scrapi-book' },
+      {
+        icon: 'discord',
+        link: 'https://discord.com/channels/170601678658076672/208066323429720064',
+      },
     ],
 
     // don't use Algolia search
