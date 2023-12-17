@@ -15,7 +15,7 @@ export default defineConfig({
       { text: 'Home', link: '/' },
       { text: 'Getting Started', link: '/getting-started/setup' },
       { text: 'Guides', link: '/guides/general/cdb' },
-      { text: 'API', link: '/api/functions/GetID' },
+      { text: 'API', link: '/api/namespaces/(Global)' },
     ],
 
     sidebar: {
