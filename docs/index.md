@@ -4,7 +4,7 @@ layout: home
 hero:
   name: scrapi-book
   text: 'EDOPro Scripting Guides and Reference'
-  tagline: |-
+  tagline: >
     Learn about the lua scripting API, how to read and write card scripts,
     how to create custom cards, and other EDOPro-adjacent topics.
   actions:
