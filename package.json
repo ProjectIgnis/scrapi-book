@@ -6,9 +6,12 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "create-api-pages": "npx tsc && node dist/book",
-    "docs:dev": "vitepress dev docs",
-    "docs:build": "vitepress build docs",
-    "docs:preview": "vitepress preview docs"
+    "vp:dev": "vitepress dev docs",
+    "vp:build": "vitepress build docs",
+    "vp:preview": "vitepress preview docs",
+    "book:dev": "npm run create-api-pages && npm run vp:dev",
+    "book:build": "npm run create-api-pages && npm run vp:build",
+    "book:preview": "npm run create-api-pages && npm run vp:preview"
   },
   "keywords": [
     "edopro",

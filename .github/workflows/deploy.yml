@@ -45,8 +45,7 @@ jobs:
         working-directory: main
         run: |-
           npm ci
-          npm run create-api-pages
-          npm run docs:build
+          npm run book:build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
