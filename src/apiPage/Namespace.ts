@@ -37,7 +37,6 @@ export const page =
       DescInfo.descAndGuide(nm),
       Topic.aliasesSection(api.namespaces.record)(nm),
       membersSummaryList(nm, 2, 'Functions', api.functions.array),
-      membersSummaryList(nm, 2, 'Constants', api.constants.array),
       TopicInfo.seeAlsoSection(nm),
       Topic.tagsSection(nm)(api),
     ]);
