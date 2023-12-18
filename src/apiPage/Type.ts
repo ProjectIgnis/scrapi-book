@@ -180,6 +180,10 @@ const getTableTypes = memoize((_: ReadonlyArray<sf.Type>) => 'tables')(
   RA.filter(isTableType)
 );
 
+const getOtherTypes = memoize((_: ReadonlyArray<sf.Type>) => 'others')(
+  RA.filter((t) => typeof t.supertype !== 'symbol')
+);
+
 export const page =
   (tp: sf.Type) =>
   (api: sf.API): md.Root => {
@@ -260,3 +264,10 @@ export const sidebarGroup = ({ types }: sf.API) => {
     ],
   };
 };
+
+export const indexPage = (docs: ReadonlyArray<sf.Type>) =>
+  md.combinedFragments([
+    Topic.summaryListWithHeading(1, 'Types')(getOtherTypes(docs)),
+    Topic.summaryListWithHeading(2, 'Function Types')(getFunctionTypes(docs)),
+    Topic.summaryListWithHeading(2, 'Table Types')(getTableTypes(docs)),
+  ]);

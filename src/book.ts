@@ -17,7 +17,7 @@ type APIPage<T extends sf.Topic> = {
   readonly link: string;
 };
 
-const prepareAll = <T extends sf.Topic>(
+const prepareAPIPages = <T extends sf.Topic>(
   pageFn: (t: T) => R.Reader<sf.API, md.Root>
 ) =>
   flow(
@@ -62,18 +62,32 @@ const generateSidebarFile = (api: sf.API) =>
     JSON.stringify(createSidebar(api), null, 2)
   );
 
+const generateTypesIndexFile = (api: sf.API) =>
+  writeFileTask(
+    path.join(process.cwd(), 'docs', 'api', 'types', '__index.md'),
+    md.compile(Type.indexPage(api.types.array))
+  );
+
+const generateTagsIndexFile = (api: sf.API) =>
+  writeFileTask(
+    path.join(process.cwd(), 'docs', 'api', 'tags', '__index.md'),
+    md.compile(Tag.indexPage(api.tags.array))
+  );
+
 const generateFiles = (api: sf.API) =>
   pipe(
     [
-      ...prepareAll(Constant.page)(api.constants.array)(api),
-      ...prepareAll(Enum.page)(api.enums.array)(api),
-      ...prepareAll(Function.page)(api.functions.array)(api),
-      ...prepareAll(Namespace.page)(api.namespaces.array)(api),
-      ...prepareAll(Tag.page)(api.tags.array)(api),
-      ...prepareAll(Type.page)(api.types.array)(api),
+      ...prepareAPIPages(Constant.page)(api.constants.array)(api),
+      ...prepareAPIPages(Enum.page)(api.enums.array)(api),
+      ...prepareAPIPages(Function.page)(api.functions.array)(api),
+      ...prepareAPIPages(Namespace.page)(api.namespaces.array)(api),
+      ...prepareAPIPages(Tag.page)(api.tags.array)(api),
+      ...prepareAPIPages(Type.page)(api.types.array)(api),
     ],
     RA.map(generatePageFile),
     RA.append(generateSidebarFile(api)),
+    RA.append(generateTypesIndexFile(api)),
+    RA.append(generateTagsIndexFile(api)),
     TE.sequenceArray
   );
 
