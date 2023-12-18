@@ -96,32 +96,3 @@ export const page =
       Topic.tagsSection(fn)(api),
     ]);
   };
-
-export const sidebarGroup = (api: sf.API) => ({
-  text: 'Functions',
-  collapsed: true,
-  items: pipe(
-    api.namespaces.array,
-    RA.filter((ns) => !Topic.isAliasCopy(ns)),
-    RA.map((ns) =>
-      pipe(
-        api.functions.array,
-        RA.filter((f) =>
-          O.isSome(f.namespace)
-            ? ns.name === f.namespace.value
-            : ns.name === '(Global)'
-        ),
-        RA.map((f) => ({
-          text: f.partialName,
-          link: Topic.url(f),
-        })),
-        (items) => ({
-          text: ns.name,
-          link: Topic.url(ns),
-          collapsed: true,
-          items,
-        })
-      )
-    )
-  ),
-});

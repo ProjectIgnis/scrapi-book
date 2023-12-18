@@ -11,37 +11,6 @@ import * as Tag from './apiPage/Tag';
 import * as Type from './apiPage/Type';
 import * as Topic from './apiPage/shared/Topic';
 
-type APIPage<T extends sf.Topic> = {
-  readonly topic: T;
-  readonly content: string;
-  readonly link: string;
-};
-
-const prepareAll = <T extends sf.Topic>(
-  pageFn: (t: T) => R.Reader<sf.API, md.Root>
-) =>
-  flow(
-    RA.map((topic: T) =>
-      pipe(
-        pageFn(topic),
-        R.map(md.compile),
-        R.map((content) => ({
-          topic,
-          content,
-          link: Topic.url(topic),
-        }))
-      )
-    ),
-    R.sequenceArray
-  );
-
-const createSidebar = (api: sf.API) => [
-  Function.sidebarGroup(api),
-  Constant.sidebarGroup(api),
-  Type.sidebarGroup(api),
-  Tag.sidebarGroup(api),
-];
-
 const writeFileTask = TE.tryCatchK(
   (filepath: string, content: string) =>
     fs.promises
@@ -50,11 +19,51 @@ const writeFileTask = TE.tryCatchK(
   (err) => String(err instanceof Error ? err.message : err)
 );
 
+type APIPage<T extends sf.Topic> = {
+  readonly topic: T;
+  readonly content: string;
+  readonly link: string;
+};
+
 const generatePageFile = (page: APIPage<sf.Topic>) =>
   writeFileTask(
     path.join(process.cwd(), 'docs', page.link + '.md'),
     page.content
   );
+
+const generateAPIPages = <T extends sf.Topic>(
+  pageFn: (t: T) => R.Reader<sf.API, md.Root>
+) =>
+  flow(
+    RA.map((topic: T) =>
+      pipe(
+        pageFn(topic),
+        R.map(md.compile),
+        R.map(
+          (content): APIPage<sf.Topic> => ({
+            topic,
+            content,
+            link: Topic.url(topic),
+          })
+        )
+      )
+    ),
+    R.sequenceArray,
+    R.map(RA.map(generatePageFile))
+  );
+
+const createSidebar = (api: sf.API) => [
+  Namespace.sidebarGroup(api),
+  Enum.sidebarGroup(api),
+  {
+    text: 'Types',
+    link: '/api/types/__index',
+  },
+  {
+    text: 'Tags',
+    link: '/api/tags/__index',
+  },
+];
 
 const generateSidebarFile = (api: sf.API) =>
   writeFileTask(
@@ -62,20 +71,30 @@ const generateSidebarFile = (api: sf.API) =>
     JSON.stringify(createSidebar(api), null, 2)
   );
 
-const generateFiles = (api: sf.API) =>
-  pipe(
-    [
-      ...prepareAll(Constant.page)(api.constants.array)(api),
-      ...prepareAll(Enum.page)(api.enums.array)(api),
-      ...prepareAll(Function.page)(api.functions.array)(api),
-      ...prepareAll(Namespace.page)(api.namespaces.array)(api),
-      ...prepareAll(Tag.page)(api.tags.array)(api),
-      ...prepareAll(Type.page)(api.types.array)(api),
-    ],
-    RA.map(generatePageFile),
-    RA.append(generateSidebarFile(api)),
-    TE.sequenceArray
+const generateTypesIndexFile = (api: sf.API) =>
+  writeFileTask(
+    path.join(process.cwd(), 'docs', 'api', 'types', '__index.md'),
+    md.compile(Type.indexPage(api.types.array))
   );
+
+const generateTagsIndexFile = (api: sf.API) =>
+  writeFileTask(
+    path.join(process.cwd(), 'docs', 'api', 'tags', '__index.md'),
+    md.compile(Tag.indexPage(api.tags.array))
+  );
+
+const generateFiles = (api: sf.API) =>
+  TE.sequenceArray([
+    ...generateAPIPages(Constant.page)(api.constants.array)(api),
+    ...generateAPIPages(Enum.page)(api.enums.array)(api),
+    ...generateAPIPages(Function.page)(api.functions.array)(api),
+    ...generateAPIPages(Namespace.page)(api.namespaces.array)(api),
+    ...generateAPIPages(Tag.page)(api.tags.array)(api),
+    ...generateAPIPages(Type.page)(api.types.array)(api),
+    generateSidebarFile(api),
+    generateTypesIndexFile(api),
+    generateTagsIndexFile(api),
+  ]);
 
 const program = pipe(
   sf.loadYard(sf.DEFAULT_OPTIONS),

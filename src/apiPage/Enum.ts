@@ -20,3 +20,15 @@ export const page =
       PageInfo.seeAlsoSection(en),
       Topic.tagsSection(en)(api),
     ]);
+
+export const sidebarGroup = (api: sf.API) => ({
+  text: 'Constants',
+  collapsed: true,
+  items: pipe(
+    api.enums.array,
+    RA.map((en) => ({
+      text: en.name,
+      link: Topic.url(en),
+    }))
+  ),
+});

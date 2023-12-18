@@ -1,5 +1,5 @@
 import type * as sf from '@that-hatter/scrapi-factory';
-import { O, RA, pipe } from '@that-hatter/scrapi-factory/fp';
+import { O, RA, flow, pipe } from '@that-hatter/scrapi-factory/fp';
 import * as md from '@that-hatter/scrapi-factory/markdown';
 import * as DescInfo from './shared/DescInfo';
 import * as Topic from './shared/Topic';
@@ -31,11 +31,8 @@ export const page =
     ]);
   };
 
-export const sidebarGroup = (api: sf.API) => ({
-  text: 'Tags',
-  collapsed: true,
-  items: pipe(
-    api.tags.array,
-    RA.map((t) => ({ text: t.name, link: Topic.url(t) }))
-  ),
-});
+export const indexPage = flow(
+  Topic.summaryListWithHeading(1, 'Tags'),
+  RA.of,
+  md.combinedFragments
+);

@@ -37,8 +37,20 @@ export const page =
       DescInfo.descAndGuide(nm),
       Topic.aliasesSection(api.namespaces.record)(nm),
       membersSummaryList(nm, 2, 'Functions', api.functions.array),
-      membersSummaryList(nm, 2, 'Constants', api.constants.array),
       TopicInfo.seeAlsoSection(nm),
       Topic.tagsSection(nm)(api),
     ]);
   };
+
+export const sidebarGroup = (api: sf.API) => ({
+  text: 'Functions',
+  collapsed: true,
+  items: pipe(
+    api.namespaces.array,
+    RA.filter((ns) => !Topic.isAliasCopy(ns)),
+    RA.map((ns) => ({
+      text: ns.name,
+      link: Topic.url(ns),
+    }))
+  ),
+});
