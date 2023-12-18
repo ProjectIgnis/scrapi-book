@@ -22,7 +22,7 @@ rather than the "Getting Started" and "Guides" pages.
 
 - Clone the repos. Make sure they're in the same folder.
   - git clone https://github.com/ProjectIgnis/scrapiyard
-  - git clone https://github.com/that-hatter/scrapi-book
+  - git clone https://github.com/ProjectIgnis/scrapi-book
 
 > NOTE: For now, it's important that they're in the same folder for `book` to find the doc files.
 > Later, there will be an option to specify the local directory or remote repo of scrapiyard.

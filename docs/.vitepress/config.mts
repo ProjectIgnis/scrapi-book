@@ -70,7 +70,7 @@ export default defineConfig({
     },
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/that-hatter/scrapi-book' },
+      { icon: 'github', link: 'https://github.com/ProjectIgnis/scrapi-book' },
       {
         icon: 'discord',
         link: 'https://discord.com/channels/170601678658076672/208066323429720064',
@@ -87,7 +87,7 @@ export default defineConfig({
               0,
               -3
             )}.yml`
-          : `https://github.com/that-hattter/scrapi-book/edit/master/docs/${filePath}`,
+          : `https://github.com/ProjectIgnis/scrapi-book/edit/master/docs/${filePath}`,
     },
   },
 });
