@@ -9,7 +9,6 @@ import {
   pipe,
 } from '@that-hatter/scrapi-factory/fp';
 import * as md from '@that-hatter/scrapi-factory/markdown';
-import { Predicate } from 'fp-ts/Predicate';
 import * as Rd from 'fp-ts/Reader';
 import * as Comp from './shared/Component';
 import * as SignatureInfo from './shared/SignatureInfo';
@@ -235,34 +234,9 @@ export const page =
     ]);
   };
 
-const sidebarSubgroup = (
-  types: ReadonlyArray<sf.Type>,
-  text: string,
-  pred: Predicate<sf.Type>
-) => ({
-  text,
-  collapsed: true,
-  items: pipe(
-    types,
-    RA.filter(pred),
-    RA.map((tp) => ({ text: tp.name, link: Topic.url(tp) }))
-  ),
-});
-
-export const sidebarGroup = ({ types }: sf.API) => {
-  const sidebar = sidebarSubgroup(
-    types.array,
-    'Types',
-    (tp) => typeof tp.supertype !== 'symbol'
-  );
-  return {
-    ...sidebar,
-    items: [
-      ...sidebar.items,
-      sidebarSubgroup(types.array, 'Function Types', isFunctionType),
-      sidebarSubgroup(types.array, 'Table Types', isTableType),
-    ],
-  };
+export const sidebarGroup = {
+  text: 'Types',
+  link: '/api/types/__index',
 };
 
 export const indexPage = (docs: ReadonlyArray<sf.Type>) =>

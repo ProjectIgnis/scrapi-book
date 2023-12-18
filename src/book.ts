@@ -55,8 +55,14 @@ const generateAPIPages = <T extends sf.Topic>(
 const createSidebar = (api: sf.API) => [
   Namespace.sidebarGroup(api),
   Enum.sidebarGroup(api),
-  Type.sidebarGroup(api),
-  Tag.sidebarGroup(api),
+  {
+    text: 'Types',
+    link: '/api/types/__index',
+  },
+  {
+    text: 'Tags',
+    link: '/api/tags/__index',
+  },
 ];
 
 const generateSidebarFile = (api: sf.API) =>

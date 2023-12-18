@@ -31,15 +31,6 @@ export const page =
     ]);
   };
 
-export const sidebarGroup = (api: sf.API) => ({
-  text: 'Tags',
-  collapsed: true,
-  items: pipe(
-    api.tags.array,
-    RA.map((t) => ({ text: t.name, link: Topic.url(t) }))
-  ),
-});
-
 export const indexPage = flow(
   Topic.summaryListWithHeading(1, 'Tags'),
   RA.of,
