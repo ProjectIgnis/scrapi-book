@@ -36,8 +36,8 @@ const prepareAll = <T extends sf.Topic>(
   );
 
 const createSidebar = (api: sf.API) => [
-  Function.sidebarGroup(api),
-  Constant.sidebarGroup(api),
+  Namespace.sidebarGroup(api),
+  Enum.sidebarGroup(api),
   Type.sidebarGroup(api),
   Tag.sidebarGroup(api),
 ];

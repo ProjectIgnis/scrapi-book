@@ -188,27 +188,3 @@ export const page =
       O.getOrElse(() => enumNotFoundError(ct))
     );
   };
-
-export const sidebarGroup = (api: sf.API) => ({
-  text: 'Constants',
-  collapsed: true,
-  items: pipe(
-    api.enums.array,
-    RA.map((en) =>
-      pipe(
-        api.constants.array,
-        RA.filter((c) => c.enum === en.name),
-        RA.map((c) => ({
-          text: c.partialName,
-          link: Topic.url(c),
-        })),
-        (items) => ({
-          text: en.name,
-          link: Topic.url(en),
-          collapsed: true,
-          items,
-        })
-      )
-    )
-  ),
-});
