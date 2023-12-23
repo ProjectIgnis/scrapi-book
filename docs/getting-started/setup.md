@@ -16,11 +16,10 @@ To have a custom card in your game, you will need:
 
 Since the `.lua` files are just text files, any text editor works, but it's a good idea to use one that provides at least syntax highlight for the Lua language. Some options are:
 
-- Notepad++ (Windows)
-- VSCode
-- Atom
-- Kate Editor (Linux)
-- Sublime Text
+- [Notepad++](https://notepad-plus-plus.org/downloads/)
+- [VSCodium](https://vscodium.com/#install) (or regular [VSCode](https://code.visualstudio.com/#alt-downloads))
+- [Kate](https://kate-editor.org/get-it/)
+- [Sublime Text](https://www.sublimetext.com/download)
 
 ### To create/edit database:
 
@@ -28,7 +27,7 @@ Any SQL editor works for that, but some softwares that can be used are:
 
 - [Datacorn](https://github.com/ProjectIgnis/Datacorn#how-to-download)
 - [DataEditorX](https://github.com/247321453/DataEditorX/blob/master/README.md)
-- DB Browser for Sqlite
+- [DB Browser for Sqlite](https://sqlitebrowser.org/)
 
 For Windows users, DataEditorX is the most beginner-friendly program to edit databases and it was designed to work with cdb files.
 The page linked above also has instructions to change the language (it defaults to chinese). After you extract it and run the program, it might ask for the download of extra components.
