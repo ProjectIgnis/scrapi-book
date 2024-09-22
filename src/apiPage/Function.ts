@@ -1,13 +1,5 @@
 import type * as sf from '@that-hatter/scrapi-factory';
-import {
-  O,
-  R,
-  RA,
-  RNEA,
-  RR,
-  identity,
-  pipe,
-} from '@that-hatter/scrapi-factory/fp';
+import { O, R, RA, RNEA, RR, pipe } from '@that-hatter/scrapi-factory/fp';
 import * as md from '@that-hatter/scrapi-factory/markdown';
 import * as BindingInfo from './shared/BindingInfo';
 import * as SignatureInfo from './shared/SignatureInfo';
@@ -44,6 +36,17 @@ const sampleCodeFn =
       md.luaCode
     );
 
+const usageExamplesLink = (fn: sf.Function) =>
+  O.some(
+    md.link(
+      'https://github.com/search?q=repo%3AProjectIgnis%2FCardScripts+' +
+        encodeURIComponent(fn.partialName) +
+        '&type=code',
+      O.none,
+      [md.text('Usage Examples')]
+    )
+  );
+
 const getNamespace = (fn: sf.Function) => (api: sf.API) =>
   pipe(
     api.namespaces.record,
@@ -71,8 +74,8 @@ const quickLinksSection = (fn: sf.Function) =>
     namespaceLink(fn),
     R.map((ns) =>
       pipe(
-        [BindingInfo.sourceLink(fn), ns],
-        RA.filterMap(identity),
+        [BindingInfo.sourceLink(fn), usageExamplesLink(fn), ns],
+        RA.compact,
         RA.intersperse<md.PhrasingContent>(md.text(' | ')),
         RNEA.fromReadonlyArray,
         O.map(md.superscript),
