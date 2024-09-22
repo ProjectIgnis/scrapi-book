@@ -20,20 +20,17 @@ const statusMessages: Readonly<Record<string, string>> = {
     ' It may be modified or deleted without notice.' +
     ' Unstable versions will not be documented when modified or deleted.',
   deleted:
-    ' It is no longer available, and attempting to use it result in errors.',
+    ' It is no longer available, and attempting to use it will result in errors.',
   deprecated: '',
 };
 
-export const statusHatnote = ({
-  doctype,
-  status,
-}: sf.Topic & sf.BindingInfo): O.Option<md.Admonition> =>
+export const statusHatnote = ({ doctype, status }: sf.Topic & sf.BindingInfo) =>
   pipe(
     status.message,
     O.filter(() => status.index !== 'stable'),
     O.map((msg) =>
       md.paragraph([
-        md.text(`This ${doctype} is ${status.index}.`),
+        md.text(`This ${doctype} is ${status.index}. `),
         ...msg.children,
         md.text(statusMessages[status.index] ?? ''),
       ])
