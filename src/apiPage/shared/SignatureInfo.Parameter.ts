@@ -17,9 +17,7 @@ const partialSignature = (param: sf.Parameter) =>
   pipe(
     param.type,
     Comp.fullTypeMD,
-    R.map(
-      RNEA.concat<md.PhrasingContent>([md.text(' '), md.inlineCode(param.name)])
-    )
+    R.map(RNEA.concatW([md.text(' '), md.inlineCode(param.name)]))
   );
 const partialSignatureWithDefault = (param: sf.Parameter) =>
   pipe(

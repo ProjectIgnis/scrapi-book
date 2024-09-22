@@ -1,5 +1,12 @@
 import type * as sf from '@that-hatter/scrapi-factory';
-import { O, RA, RNEA, flow, pipe } from '@that-hatter/scrapi-factory/fp';
+import {
+  O,
+  RA,
+  RNEA,
+  flow,
+  identity,
+  pipe,
+} from '@that-hatter/scrapi-factory/fp';
 import * as md from '@that-hatter/scrapi-factory/markdown';
 import * as R from 'fp-ts/Reader';
 import * as Comp from './Component';
@@ -11,7 +18,9 @@ const partialSignature = (ret: sf.Return) =>
     ret.type,
     Comp.fullTypeMD,
     R.map(
-      RNEA.concatW(O.isSome(ret.name) ? [md.inlineCode(ret.name.value)] : [])
+      O.isSome(ret.name)
+        ? RNEA.concatW([md.text(' '), md.inlineCode(ret.name.value)])
+        : identity
     )
   );
 
@@ -20,8 +29,8 @@ export const combinedPartialSignatures = flow(
   R.sequenceArray,
   R.map(
     flow(
+      RA.intersperse<md.Children<md.Paragraph>>([md.text(', ')]),
       RA.flatten,
-      RA.intersperse<md.PhrasingContent>(md.text(', ')),
       RNEA.fromReadonlyArray,
       O.getOrElse((): md.Children<md.Paragraph> => [md.text('nil')])
     )

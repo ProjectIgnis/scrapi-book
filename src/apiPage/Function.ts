@@ -1,14 +1,5 @@
 import type * as sf from '@that-hatter/scrapi-factory';
-import {
-  O,
-  R,
-  RA,
-  RNEA,
-  RR,
-  identity,
-  pipe,
-  string,
-} from '@that-hatter/scrapi-factory/fp';
+import { O, R, RA, RNEA, RR, pipe } from '@that-hatter/scrapi-factory/fp';
 import * as md from '@that-hatter/scrapi-factory/markdown';
 import * as BindingInfo from './shared/BindingInfo';
 import * as SignatureInfo from './shared/SignatureInfo';
@@ -20,7 +11,9 @@ type ParamSplit = Readonly<[sf.Parameter, ReadonlyArray<sf.Parameter>]>;
 const isColonCallable =
   (fn: sf.Function) =>
   ([{ type }]: ParamSplit): boolean =>
-    type.length === 1 && O.elem(string.Eq)(type[0], fn.namespace);
+    type.length === 1 &&
+    O.isSome(fn.namespace) &&
+    RNEA.head(type) === fn.namespace.value;
 
 const colonCallSample =
   (fn: sf.Function) =>
@@ -28,8 +21,9 @@ const colonCallSample =
     fst.name + ':' + fn.partialName + SignatureInfo.argsString(rest);
 
 // dot notation (or just using the name if there's no module)
-const dotCallSample = (fn: sf.Function) => (): string =>
-  fn.name + SignatureInfo.argsString(fn.parameters);
+const dotCallSample =
+  (fn: sf.Function, v: sf.Variant<sf.Function>) => (): string =>
+    fn.name + SignatureInfo.argsString(v.parameters);
 
 const sampleCodeFn =
   (fn: sf.Function) =>
@@ -38,9 +32,20 @@ const sampleCodeFn =
       RNEA.fromReadonlyArray(v.parameters),
       O.map(RNEA.unprepend),
       O.filter(isColonCallable(fn)),
-      O.match(dotCallSample(fn), colonCallSample(fn)),
+      O.match(dotCallSample(fn, v), colonCallSample(fn)),
       md.luaCode
     );
+
+const usageExamplesLink = (fn: sf.Function) =>
+  O.some(
+    md.link(
+      'https://github.com/search?q=repo%3AProjectIgnis%2FCardScripts+' +
+        encodeURIComponent(fn.partialName) +
+        '&type=code',
+      O.none,
+      [md.text('Usage Examples')]
+    )
+  );
 
 const getNamespace = (fn: sf.Function) => (api: sf.API) =>
   pipe(
@@ -69,8 +74,8 @@ const quickLinksSection = (fn: sf.Function) =>
     namespaceLink(fn),
     R.map((ns) =>
       pipe(
-        [BindingInfo.sourceLink(fn), ns],
-        RA.filterMap(identity),
+        [BindingInfo.sourceLink(fn), usageExamplesLink(fn), ns],
+        RA.compact,
         RA.intersperse<md.PhrasingContent>(md.text(' | ')),
         RNEA.fromReadonlyArray,
         O.map(md.superscript),

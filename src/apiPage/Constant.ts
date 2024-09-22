@@ -110,6 +110,17 @@ const valueSection = ({ value }: sf.Constant, { bitmaskInt }: sf.Enum) => {
   return pipe(value, String, md.inlineCode, RNEA.of, md.paragraph);
 };
 
+const usageExamplesLink = (ct: sf.Constant) =>
+  O.some(
+    md.link(
+      'https://github.com/search?q=repo%3AProjectIgnis%2FCardScripts+' +
+        encodeURIComponent(ct.name) +
+        '&type=code',
+      O.none,
+      [md.text('Usage Examples')]
+    )
+  );
+
 const getNamespace = (ct: sf.Constant) => (api: sf.API) =>
   pipe(
     api.namespaces.record,
@@ -145,8 +156,8 @@ const quickLinksSection = (ct: sf.Constant) =>
     R.sequenceArray,
     R.map((links) =>
       pipe(
-        [BindingInfo.sourceLink(ct), ...links],
-        RA.filterMap(identity),
+        [BindingInfo.sourceLink(ct), usageExamplesLink(ct), ...links],
+        RA.compact,
         RA.intersperse<md.PhrasingContent>(md.text(' | ')),
         RNEA.fromReadonlyArray,
         O.map(md.superscript),

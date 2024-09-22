@@ -1,8 +1,8 @@
 import * as sf from '@that-hatter/scrapi-factory';
 import { R, RA, TE, flow, pipe } from '@that-hatter/scrapi-factory/fp';
 import * as md from '@that-hatter/scrapi-factory/markdown';
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs/promises';
+import path from 'node:path';
 import * as Constant from './apiPage/Constant';
 import * as Enum from './apiPage/Enum';
 import * as Function from './apiPage/Function';
@@ -13,9 +13,9 @@ import * as Topic from './apiPage/shared/Topic';
 
 const writeFileTask = TE.tryCatchK(
   (filepath: string, content: string) =>
-    fs.promises
+    fs
       .mkdir(path.dirname(filepath), { recursive: true })
-      .then(() => fs.promises.writeFile(filepath, content)),
+      .then(() => fs.writeFile(filepath, content)),
   (err) => String(err instanceof Error ? err.message : err)
 );
 
@@ -97,12 +97,16 @@ const generateFiles = (api: sf.API) =>
   ]);
 
 const program = pipe(
-  sf.loadYard(sf.DEFAULT_OPTIONS),
+  {
+    ...sf.DEFAULT_OPTIONS,
+    directory: path.join(process.cwd(), '..', 'scrapiyard', 'api'),
+  },
+  sf.loadYard,
   TE.chainW(({ api }) => generateFiles(api)),
   TE.tapError((err) => {
     const errStr = JSON.stringify(err, null, 2);
     // eslint-disable-next-line functional/no-expression-statements
-    console.log(errStr);
+    console.error(errStr);
     return writeFileTask(path.join(process.cwd(), '..', 'error.json'), errStr);
   })
 );

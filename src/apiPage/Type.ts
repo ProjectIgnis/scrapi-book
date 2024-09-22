@@ -45,15 +45,15 @@ const fieldSection = (hdepth: md.HeadingDepth) => (field: sf.TableTypeField) =>
     Rd.map((heading) => md.listItem([heading, field.description]))
   );
 
-const mappedTypeSectionTitle = (mt: sf.TableTypeMappedType) => (api: sf.API) =>
-  pipe(
-    Comp.fullTypeMD(mt.valueType)(api),
-    RNEA.concat<md.PhrasingContent>([
-      md.text(' ['),
+const mappedTypeSectionTitle =
+  (mt: sf.TableTypeMappedType) =>
+  (api: sf.API): RNEA.ReadonlyNonEmptyArray<md.PhrasingContent> =>
+    [
+      md.text('[key: '),
       Comp.singleTypeMD(mt.keyType)(api),
-      md.text(']'),
-    ])
-  );
+      md.text('] '),
+      ...Comp.fullTypeMD(mt.valueType)(api),
+    ];
 
 const mappedTypeListItem =
   (hdepth: md.HeadingDepth) => (mt: sf.TableTypeMappedType) =>
@@ -107,7 +107,7 @@ const allMappedTypeKeys = memoize(({ name }: sf.TableType) => name)(
 
 const tableTypePageUniqueSection = (tt: sf.TableType) =>
   pipe(
-    tableTypeInfoSection(2)(tt),
+    tableTypeInfoSection(3)(tt),
     Rd.map((info) => md.combinedFragments([info, tt.guide]))
   );
 
@@ -222,7 +222,7 @@ export const page =
       usageList(
         tableTypes,
         allMappedTypeKeys,
-        'Table Types that use this type as index'
+        'Table Types that use this type as key'
       ),
       tp.supertype === sf.TABLE_TYPE_SYMBOL
         ? tableTypePageUniqueSection(tp)(api)

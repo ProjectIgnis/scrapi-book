@@ -1,7 +1,7 @@
 import type * as sf from '@that-hatter/scrapi-factory';
 import { O, RA, RNEA, RR, pipe } from '@that-hatter/scrapi-factory/fp';
 import * as md from '@that-hatter/scrapi-factory/markdown';
-import path from 'path';
+import path from 'node:path';
 import * as BindingInfo from './BindingInfo';
 
 // ----------------------------------------------------------------------------
