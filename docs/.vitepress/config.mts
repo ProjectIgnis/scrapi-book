@@ -77,8 +77,32 @@ export default defineConfig({
       },
     ],
 
-    // don't use Algolia search
-    search: { provider: 'local' },
+    search: {
+      provider: 'local',
+      options: {
+        miniSearch: {
+          options: {
+            processTerm: (term_, fieldName) => {
+              const term = term_.toLowerCase();
+              if (fieldName !== 'title') return term;
+
+              const terms: string[] = [term];
+              for (let i = 0; i <= term.length - 2; i++)
+                terms.push(term.slice(i));
+
+              return terms;
+            },
+          },
+          searchOptions: {
+            fuzzy: false,
+            prefix: true,
+            boost: { title: 5, text: 1, titles: 1 },
+            processTerm: (term) => term.toLowerCase(),
+            boostTerm: (_, i) => (i === 0 ? 2 : 1),
+          },
+        },
+      },
+    },
 
     editLink: {
       pattern: ({ filePath }) =>
