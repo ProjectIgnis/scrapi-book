@@ -43,5 +43,8 @@
   "dependencies": {
     "@that-hatter/scrapi-factory": "^0.3.4",
     "vitepress": "^1.3.4"
+  },
+  "overrides": {
+    "whatwg-url": "14.x"
   }
 }
