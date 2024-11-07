@@ -1,5 +1,5 @@
 import * as sf from '@that-hatter/scrapi-factory';
-import { R, RA, TE, flow, pipe } from '@that-hatter/scrapi-factory/fp';
+import { O, R, RA, TE, flow, pipe } from '@that-hatter/scrapi-factory/fp';
 import * as md from '@that-hatter/scrapi-factory/markdown';
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -35,9 +35,11 @@ const generateAPIPages = <T extends sf.Topic>(
   pageFn: (t: T) => R.Reader<sf.API, md.Root>
 ) =>
   flow(
-    RA.map((topic: T) =>
-      pipe(
-        pageFn(topic),
+    RA.filterMap((topic: T) => {
+      if ('source' in topic && Topic.isAliasCopy(topic)) return O.none;
+      return pipe(
+        topic,
+        pageFn,
         R.map(md.compile),
         R.map(
           (content): APIPage<sf.Topic> => ({
@@ -45,9 +47,10 @@ const generateAPIPages = <T extends sf.Topic>(
             content,
             link: Topic.url(topic),
           })
-        )
-      )
-    ),
+        ),
+        O.some
+      );
+    }),
     R.sequenceArray,
     R.map(RA.map(generatePageFile))
   );

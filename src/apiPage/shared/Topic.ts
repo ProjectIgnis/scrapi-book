@@ -8,15 +8,7 @@ import * as BindingInfo from './BindingInfo';
 // linkification
 // ----------------------------------------------------------------------------
 
-const aliasPath = (doc: AliasCopy) => {
-  if (doc.doctype === 'constant') return doc.enum + '/' + doc.partialName;
-  if (doc.doctype === 'namespace') return doc.name;
-  return (
-    (O.isSome(doc.namespace) ? doc.namespace.value + '/' : '') + doc.partialName
-  );
-};
-
-export const mainUrl = (doc: sf.Topic) =>
+export const url = (doc: sf.Topic) =>
   pipe(
     doc.filepath,
     // slice to remove the '.yml' extension
@@ -25,11 +17,6 @@ export const mainUrl = (doc: sf.Topic) =>
     ),
     O.getOrElse(() => '#')
   );
-
-export const url = (doc: sf.Topic) =>
-  'source' in doc && isAliasCopy(doc)
-    ? '/api/' + doc.doctype + 's/' + aliasPath(doc)
-    : mainUrl(doc);
 
 export const linkify =
   (content: md.Children<md.Link>) =>
@@ -60,7 +47,9 @@ export const tagsSection =
 
 const summaryListItem = (doc: sf.Topic): md.ListItem =>
   pipe(
-    doc.summary,
+    'source' in doc && isAliasCopy(doc)
+      ? O.some(aliasSummary(doc))
+      : doc.summary,
     O.map((a) =>
       md.paragraph([linkedNameCode(doc), md.text(' - '), ...a.children])
     ),
@@ -108,18 +97,33 @@ export const getAliasCopies = <T extends Aliasable>(
     );
 };
 
+export const aliasSummary = (alias: AliasCopy) => {
+  const status =
+    (alias.status.index === 'stable' ? '' : alias.status.index + ' ') +
+    'alias of';
+  return md.paragraph([
+    md.text(status[0]!.toUpperCase() + status.slice(1)),
+    md.link(url(alias), O.none, [md.inlineCode(alias.aliasOf.value)]),
+    md.text('.'),
+  ]);
+};
+
+// TODO: remove this and its calls
 export const aliasPage = (alias: AliasCopy): md.Root =>
   md.root([
     md.simpleHeading(1)(alias.name),
     md.paragraph([
       md.text('This is an alias of '),
-      md.link(mainUrl(alias), O.none, [md.inlineCode(alias.aliasOf.value)]),
+      md.link(url(alias), O.none, [md.inlineCode(alias.aliasOf.value)]),
       md.text('.'),
     ]),
   ]);
 
-const aliasNameString = (doc: sf.BindingInfo): md.PhrasingContent =>
-  BindingInfo.strikeBasedOnStatus(doc)(md.text(doc.name));
+const aliasNameString = (doc: sf.BindingInfo): md.Children<md.Paragraph> => {
+  const name = BindingInfo.strikeBasedOnStatus(doc)(md.inlineCode(doc.name));
+  if (doc.status.index === 'stable') return [name];
+  return [name, ...md.superscript([md.text(doc.status.index)])];
+};
 
 export const aliasesSection =
   (allEntries: RR.ReadonlyRecord<string, Aliasable>) =>
@@ -128,7 +132,8 @@ export const aliasesSection =
       aliases,
       RA.filterMap((a) => RR.lookup(a.name)(allEntries)),
       RA.map(aliasNameString),
-      RA.intersperse<md.PhrasingContent>(md.text(', ')),
+      RA.intersperse<md.Children<md.Paragraph>>([md.text(', ')]),
+      RA.flatten,
       RNEA.fromReadonlyArray,
       O.map((a) =>
         md.paragraph([md.bold([md.text('aliases:')]), md.text(' '), ...a])
