@@ -69,6 +69,11 @@ export default defineConfig({
       '/api/': apiSidebar,
     },
 
+    outline: {
+      label: 'Contents',
+      level: [1, 4],
+    },
+
     socialLinks: [
       { icon: 'github', link: 'https://github.com/ProjectIgnis/scrapi-book' },
       {
