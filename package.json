@@ -41,8 +41,8 @@
     "vue": "^3.3.4"
   },
   "dependencies": {
-    "@that-hatter/scrapi-factory": "^0.3.4",
-    "vitepress": "^1.3.4"
+    "@that-hatter/scrapi-factory": "^0.4.0",
+    "vitepress": "^1.6.3"
   },
   "overrides": {
     "whatwg-url": "14.x"
