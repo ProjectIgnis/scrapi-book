@@ -11,7 +11,7 @@
   --vp-c-brand-1: #e4712a;
   --vp-c-brand-2: #fba731;
   --vp-c-brand-3: #b185fc;
-  /* --vp-c-brand-soft: #ffeebe; */
+  --vp-c-brand-soft: #ffeebe;
 }
 
 /**
@@ -49,4 +49,33 @@
     #ae4404 30%,
     #ecb754
   );
+}
+
+/**
+ * Component: Home
+ * -------------------------------------------------------------------------- */
+.vp-doc .custom-block {
+  border-width: 1px;
+  /* border-left-width: 6px; */
+}
+
+.vp-doc .custom-block.warning {
+  border-color: var(--vp-c-warning-1);
+}
+
+.vp-doc .custom-block.tip {
+  background-color: var(--vp-c-purple-soft);
+  border-color: var(--vp-c-purple-3);
+}
+
+.vp-doc .custom-block.danger {
+  border-color: var(--vp-c-danger-3);
+}
+
+.vp-doc .custom-block.info {
+  border-color: var(--vp-c-gray-1);
+}
+
+.vp-doc .custom-block.details {
+  border-color: var(--vp-c-gray-1);
 }
