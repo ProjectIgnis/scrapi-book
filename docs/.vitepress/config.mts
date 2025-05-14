@@ -1,6 +1,9 @@
 import { defineConfig } from 'vitepress';
 import apiSidebar from './apiSidebar.json';
 
+// allow treating `.cdb` files as assets rather than html pages
+process.env.VITE_EXTRA_EXTENSIONS = 'cdb';
+
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: 'scrapi-book',
@@ -23,8 +26,29 @@ export default defineConfig({
         {
           text: 'Getting Started',
           items: [
-            { text: 'Prerequisites and Setup', link: '/getting-started/setup' },
-            { text: 'Your First Card', link: '/getting-started/first-card' },
+            {
+              text: 'Setup and File Structure',
+              link: '/getting-started/setup',
+            },
+            {
+              text: 'Your First Card',
+              link: '/getting-started/first-card',
+              items: [
+                {
+                  text: 'Adding the Card to EDOPro',
+                  items: [
+                    {
+                      text: 'Using Datacorn',
+                      link: '/getting-started/first-card/adding-datacorn',
+                    },
+                    {
+                      text: 'Using an SQLite Editor',
+                      link: '/getting-started/first-card/adding-sqlite',
+                    },
+                  ],
+                },
+              ],
+            },
             {
               text: 'Reading Card Scripts',
               link: '/getting-started/reading-card-scripts',
